@@ -1,0 +1,65 @@
+.taha {
+    width: 100%;
+    font-size: 15px;
+    padding: 6px 0px;
+    border-radius: 6px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #ffffff;
+    background:chocolate;
+    text-shadow: var(-primary-tshadow);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    transition: all linear .3s;
+    -webkit-transition: all linear .3s;
+    -moz-transition: all linear .3s;
+    -ms-transition: all linear .3s;
+    -o-transition: all linear .3s;
+  }
+/* Default styles for larger screens */
+.link-container {
+    display: flex;
+    justify-content: space-between; /* Adjust the spacing as needed */
+  }
+  
+  .link-container .product-add {
+    display: inline-block; /* Ensures the background covers the entire link text */
+    margin-left: 4px;
+    height: 45px;
+    text-align: center; /* Original text alignment for larger screens */
+    padding: 10px; /* Add padding for better spacing */
+    background-color: #f0f0f0; /* Add your desired background color */
+  }
+  /* Hover effect for larger screens */
+.link-container .product-add:hover {
+    background-color:chocolate; /* Change to your desired hover background color */
+    color: white;
+  }
+
+  /* Media query for mobile devices */
+  @media (max-width: 600px) { /* Adjust the max-width to your breakpoint */
+    .link-container {
+      justify-content: flex-start; /* Align items to the left */
+      gap: 10px; /* Add space between the links */
+    }
+  
+    .link-container .product-add {
+      width: auto; /* Adjust width to fit content */
+      flex-grow: 0; /* Prevent links from growing to fill the container */
+      text-align: left; /* Align text to the left */
+      padding: 10px; /* Maintain padding for consistency */
+      background-color: #f0f0f0; /* Ensure background color is consistent */
+    }
+    .link-container .product-add:hover {
+        background-color:chocolate; /* Change to your desired hover background color */
+        color: white;
+      }
+  }
+  
