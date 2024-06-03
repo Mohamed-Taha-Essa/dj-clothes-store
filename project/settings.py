@@ -1,3 +1,4 @@
+
 """
 Django settings for project project.
 
@@ -25,13 +26,13 @@ SECRET_KEY = 'django-insecure-^wk%7yl=b)iikjyyk-zf2z$xx7^)r^9zzh*18w&$^88u$ff3t6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts',
+        'accounts',
     'django.contrib.sites',
 
     'django.contrib.admin',
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # packages
+    #packages
     'taggit',
     'rest_framework',
     'django_filters',
@@ -55,7 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
     'mathfilters',
-    # apps
+    #apps
     'products',
     'settings',
     'orders',
@@ -66,7 +67,7 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'jwt-auth',
 }
 
-# rest api
+#rest api
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
@@ -77,7 +78,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
 
     ],
-
+    
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ]
@@ -183,11 +184,12 @@ STATICFILES_DIRS = [
 # MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR/'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTHENTICATION_BACKENDS = [
+AUTHENTICATION_BACKENDS =[
     'accounts.backend.UsernameOrEmailLogin'
 ]
 LOCALE_PATHS = ['locale']
