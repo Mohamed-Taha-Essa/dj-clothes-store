@@ -22,7 +22,7 @@ class ProductListSerializer(TaggitSerializer,serializers.ModelSerializer):
     class Meta:
         model = Product
         # fields ='__all__'
-        fields =['name','brand','price','review_count', 'avg_rate','tags']
+        fields =['name','brand','price','review_count', 'avg_rate','tags','image']
             
     
 class BrandDetailSerializer(serializers.ModelSerializer):

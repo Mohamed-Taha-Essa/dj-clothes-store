@@ -115,7 +115,8 @@ def mydebug(request):
 
 class ProductList(ListView):
     model = Product
-    paginate_by =50
+    paginate_by =20
+   
 
     #if you only want to show the product that have quantity > 0
     ''' 
@@ -158,9 +159,7 @@ class ProductDetail(DetailView):
         return context
     
 
-# class BrandList(ListView):
-#     model =Brand
-#     paginate_by =50
+
 class BrandList(ListView):
     model = Brand
     paginate_by =50

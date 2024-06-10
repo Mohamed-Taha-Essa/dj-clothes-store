@@ -71,17 +71,17 @@ REST_AUTH = {
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 20,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
 
     ],
-    
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+    #make api secure do't show products to vuejs
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 }
 
 MIDDLEWARE = [
@@ -171,16 +171,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
+# # MEDIA_URL = '/media/'
+# # MEDIA_ROOT = BASE_DIR / 'uploads'
+# MEDIA_URL = 'media/'
+# MEDIA_ROOT = BASE_DIR/'media'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'uploads'
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR/'media'
+
+MEDIA_URL = '/media/'  # Leading slash added
+MEDIA_ROOT = BASE_DIR / 'media'  # Absolute path
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
