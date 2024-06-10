@@ -1,6 +1,7 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect ,get_object_or_404
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.contrib import messages
 
 from .forms import SignupForm ,ActivateUserForm
 from .models import Profile
@@ -38,11 +39,11 @@ def signup(request):
             )
             
 
-            return redirect(f'/accounts/{username}/activate')
+            return redirect(f'/accounts/activate/{username}')
     else:
         form = SignupForm()
     
-    return render(request , 'accounts/signup.html',{'form':form})
+    return render(request , 'accounts/signup.html',{'form':form })
 
 
 def user_activate(request,username):
@@ -64,13 +65,35 @@ def user_activate(request,username):
                 user.save()
                 profile.save()
                 return redirect('/accounts/login')
-
+            else:
+                messages.error(request, 'Invalid activation code.')
 
     else:
         form = ActivateUserForm()
     
-    return render(request , 'accounts/activate.html',{'form':form})
+    return render(request , 'accounts/activate.html',{'form':form,'username':username})
 
+def resend_activation_code(request, username):
+    if request.method == 'POST':
+        try:
+            user = get_object_or_404(User , username = username)
+            profile = get_object_or_404(Profile, user=user)
+            
+            send_mail(
+                "Activate Your email",
+                f"Welcome {username} \nUsing this {profile.code} to activate your Account",
+                "pythondevloper33@gmail.com",
+                [user.email],
+                fail_silently=False,
+            )
+            
+            messages.success(request, 'Activation code has been resent to your email.')
+            return redirect('user_activate', username=username)
+        
+        except Profile.DoesNotExist:
+            messages.error(request, 'User not found.')
+        return redirect('user_activate', username=username)  # Redirect back to the activation page
+    return redirect('user_activate', username=username)
 
 
 def dashboard(request):
