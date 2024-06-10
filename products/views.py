@@ -4,6 +4,7 @@ from django.views.generic import ListView ,DetailView
 from django.db.models import Q,F,Value,Max
 from django.db.models.aggregates import Count ,Sum,Min,Avg
 from django.views.decorators.cache import cache_page
+from django_filters import rest_framework as filters
 
 
 from django.http import JsonResponse
@@ -162,7 +163,7 @@ class ProductDetail(DetailView):
 
 class BrandList(ListView):
     model = Brand
-    paginate_by =50
+ 
     queryset = Brand.objects.annotate(num_products=Count('product_brand'))
 
    

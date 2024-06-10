@@ -42,9 +42,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
           'flag' , 'subtitle' ,'description', 'quantity','brand','tags','images']
 
 class BrandListSerializer(serializers.ModelSerializer):
+    num_products = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Brand
-        fields ='__all__'
+        fields = ['id', 'name', 'num_products']  # Include other fields as needed
 
 
 

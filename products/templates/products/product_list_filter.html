@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div id="app">
+        <div class="filter-section">
+            <h6 class="shop-widget-title">Filter by Brand</h6>
+
+            <form @submit.prevent="filterProducts">
+
+                <input class="shop-widget-search" type="text" placeholder="Search..." v-model="brandSearch">
+               
+                <ul class="shop-widget-list shop-widget-scroll">
+                    
+                    <li v-for="brand in filteredBrands" :key="brand.id">
+                       
+                        <div class="shop-widget-content">
+                           
+                            <input type="checkbox" :id="'brand' + brand.id" v-model="selectedBrands" :value="brand.id">
+                            
+                            <label :for="'brand' + brand.id">{{ brand.name }}</label>
+                        </div>
+                    </li>
+                </ul>
+                <button class="shop-widget-btn" @click="clearFilters">
+                    <i class="far fa-trash-alt"></i>
+                    <span>clear filter</span>
+                </button>
+            </form>
+
+
+        </div>
+
+        <div class="product-list-section">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4">
+                <div class="col" v-for="product in products" :key="product.id">
+                    <div class="product-card" :class="{'product-disable': product.quantity < 1}">
+                        <div class="product-media">
+                            <a class="product-image" :href="'/products/' + product.slug">
+                                <img :src="product.image" alt="product">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <h6 class="product-name">
+                                <a :href="'/products/' + product.slug">{{ product.name }}</a>
+                            </h6>
+                            <h6 class="product-price">
+                                <span>${{ product.price }}</span>
+                            </h6>
+                            <a :href="'/products/' + product.slug" class="taha" title="Add to Cart">
+                                <i class="fas fa-shopping-basket"></i>
+                                <span>add</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const { createApp } = Vue;
+
+            createApp({
+                data() {
+                    return {
+                        products: [],
+                        brands: [],
+                        selectedBrands: [],
+                        brandSearch: ''
+                    }
+                },
+                computed: {
+                    filteredBrands() {
+                        return this.brands.filter(brand => brand.name.toLowerCase().includes(this.brandSearch.toLowerCase()));
+                    }
+                },
+                methods: {
+                    fetchBrands() {
+                        axios.get('/api/brands/')
+                            .then(response => {
+                                this.brands = response.data.results;
+                            })
+                            .catch(error => {
+                                console.error('Error fetching brands:', error);
+                            });
+                    },
+                    fetchProducts() {
+                        let filterParams = {
+                            brand: this.selectedBrands.join(',')
+                        };
+                        axios.get('/api/products/', { params: filterParams })
+                            .then(response => {
+                                this.products = response.data.results;
+                            })
+                            .catch(error => {
+                                console.error('Error fetching products:', error);
+                            });
+                    },
+                    filterProducts() {
+                        this.fetchProducts();
+                    },
+                    clearFilters() {
+                        this.selectedBrands = [];
+                        this.fetchProducts();
+                    }
+                },
+                mounted() {
+                    this.fetchBrands();
+                    this.fetchProducts();
+                }
+            }).mount('#app');
+        });
+    </script>
+{% endblock body %}

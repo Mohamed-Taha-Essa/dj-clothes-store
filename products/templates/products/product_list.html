@@ -168,67 +168,23 @@
                         </div>
                         <div class="shop-widget">
                             <h6 class="shop-widget-title">Filter by Brand</h6>
-                            <form>
-                                <input class="shop-widget-search" type="text" placeholder="Search...">
+
+                            <form @submit.prevent="filterProducts">
+
+                                <input class="shop-widget-search" type="text" placeholder="Search..." v-model="brandSearch">
                                 <ul class="shop-widget-list shop-widget-scroll">
-                                    <li>
+                                    
+                                    <li v-for="brand in filteredBrands" :key="brand.id">
                                         <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand1">
-                                            <label for="brand1">mari gold</label>
+                                            <input type="checkbox" :id="'brand' + brand.id" v-model="selectedBrands" :value="brand.id">
+
+                                            <label :for="'brand' + brand.id">[[brand.name]] </label>
                                         </div>
-                                        <span class="shop-widget-number">(13)</span>
+                                        <span class="shop-widget-number">([[brand.num_products]])</span>
                                     </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand2">
-                                            <label for="brand2">tredar</label>
-                                        </div>
-                                        <span class="shop-widget-number">(28)</span>
-                                    </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand3">
-                                            <label for="brand3">keya</label>
-                                        </div>
-                                        <span class="shop-widget-number">(35)</span>
-                                    </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand4">
-                                            <label for="brand4">diamond</label>
-                                        </div>
-                                        <span class="shop-widget-number">(47)</span>
-                                    </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand5">
-                                            <label for="brand5">lilly's</label>
-                                        </div>
-                                        <span class="shop-widget-number">(59)</span>
-                                    </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand6">
-                                            <label for="brand6">fremant</label>
-                                        </div>
-                                        <span class="shop-widget-number">(64)</span>
-                                    </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand7">
-                                            <label for="brand7">avocads</label>
-                                        </div>
-                                        <span class="shop-widget-number">(77)</span>
-                                    </li>
-                                    <li>
-                                        <div class="shop-widget-content">
-                                            <input type="checkbox" id="brand8">
-                                            <label for="brand8">boroclas</label>
-                                        </div>
-                                        <span class="shop-widget-number">(85)</span>
-                                    </li>
+                                    
                                 </ul>
-                                <button class="shop-widget-btn">
+                                <button class="shop-widget-btn" @click="clearFilters">
                                     <i class="far fa-trash-alt"></i>
                                     <span>clear filter</span>
                                 </button>
@@ -405,10 +361,11 @@
                             </div>
                         </div>
                         {% if is_paginated  %}
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="bottom-paginate">
-                                        <p class="page-info">Showing 12 of 60 Results</p>
+                            <div class="row ms-auto">
+                                <div class="col-lg-12 ">
+                                    <div class="bottom-paginate " >
+                                        <p class="page-info">Showing  of  Results</p>
+                                        
                                         <ul class="pagination">
                                             {% comment %} prev page {% endcomment %}
                                             {% if page_obj.has_previous  %}
@@ -446,61 +403,81 @@
         </section>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
-    <script>
-        const { createApp } = Vue;
+      
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const { createApp } = Vue;
+            
+                createApp({
+                    data() {
+                        return {
+                            products: [],
+                            brands: [],
+                            selectedBrands: [],
+                            brandSearch: ''
+                        };
+                    },
+                    computed: {
+                        filteredBrands() {
+                            if (!this.brands || this.brands.length === 0) {
+                                return [];
+                            }
+                            return this.brands.filter(brand => brand.name.toLowerCase().includes(this.brandSearch.toLowerCase()));
+                        }
+                    },
+                    methods: {
+                        fetchBrands() {
+                            axios.get('http://127.0.0.1:8000/products/api/brands')
+                                .then(response => {
+                                    console.log('Brands fetched:', response.data);
+                                    this.brands = response.data;
+                                    console.log('Brands fetched:', this.brands);
 
-        createApp({
-            data() {
-                return {
-                    products: [],
-                    brands: [],
-                    selectedBrands: [],
-                    brandSearch: ''
-                }
-            },
-            computed: {
-                filteredBrands() {
-                    return this.brands.filter(brand => brand.name.toLowerCase().includes(this.brandSearch.toLowerCase()));
-                }
-            },
-            methods: {
-                fetchBrands() {
-                    axios.get('http://127.0.0.1:8000/products/api/brands')
-                        .then(response => {
-                            this.brands = response.data.results;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching brands:', error);
-                        });
-                },
-                fetchProducts() {
-                    let filterParams = {
-                        brand: this.selectedBrands.join(',')
-                    };
-                    axios.get('http://127.0.0.1:8000/products/api/products', { params: filterParams })
-                        .then(response => {
-                            this.products = response.data.results;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching products:', error);
-                        });
-                },
-                filterProducts() {
-                    this.fetchProducts();
-                },
-                clearFilters() {
-                    this.selectedBrands = [];
-                    this.fetchProducts();
-                }
-            },
-            mounted() {
-                this.fetchBrands();
-                this.fetchProducts();
-            }, 
-            delimiters: ['[[', ']]'] ,
-        }).mount('#app');
-    </script>
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching brands:', error);
+                                });
+                        },
+                        fetchProducts() {
+                            let filterParams = {
+                                brand: this.selectedBrands.join(',')
+                            };
+                            console.log('Fetching products with filterParams:', filterParams);  // Debugging line
 
+                            axios.get('http://127.0.0.1:8000/products/api/products', { params: filterParams })
+                                .then(response => {
+                                    this.products = response.data.results;
+                                    console.log('products fetched:', this.products);
+
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching products:', error);
+                                });
+                        },
+                        filterProducts() {
+                            console.log('Selected brands:', this.selectedBrands);  // Debugging line
+
+                            this.fetchProducts();
+                        },
+                        clearFilters() {
+                            this.selectedBrands = [];
+                            this.fetchProducts();
+                        }
+                    },
+                    mounted() {
+                        this.fetchBrands();
+                        this.fetchProducts();
+                    },
+                    watch: {
+                        selectedBrands() {
+                            console.log('Selected brands updated:', this.selectedBrands);  // Debugging line
+                            this.filterProducts();
+                        }
+                    },
+                    delimiters: ['[[', ']]'],
+                }).mount('#app');
+            });
+            </script>
     
     {% endblock body %}
      
