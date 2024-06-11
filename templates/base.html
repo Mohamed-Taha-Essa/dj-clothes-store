@@ -26,7 +26,77 @@
 
         <!-- WEBPAGE TITLE -->
         <title> Mohemd Essa </title>
-
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
+        <style>
+            
+           
+            @keyframes moveUpDown {
+                0%, 100% {
+                    transform: translateY(0); /* Start and end position */
+                }
+                50% {
+                    transform: translateY(-30px); /* Move up */
+                }
+            }
+            
+           
+            
+            #whatsappButton {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                background-color: #25D366;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                cursor: pointer;
+                font-size: 24px;
+                z-index: 2;
+                animation: moveUpDown 2s infinite; /* Apply animation */
+            }
+            
+            #whatsappButton:hover {
+                background-color: #128C7E;
+            }
+            
+            #whatsappButton:hover::before {
+                position: absolute;
+                bottom: calc(100% + 15px); /* Position above the button */
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 14px;
+                color: white;
+                background-color: #128C7E;
+                padding: 5px 10px;
+                border-radius: 5px;
+                opacity: 0;
+                transition: opacity 0.3s ease; /* Add transition for smooth opacity change */
+            }
+            
+            #whatsappButton:hover::after {
+                position: absolute;
+                bottom: calc(100% - 5px); /* Position below the text */
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent #128C7E transparent; /* Triangle below text */
+            }
+            
+            @media (max-width: 991px) {
+                #whatsappButton {
+                    position: fixed;
+                    bottom: 60px; /* Adjust the distance from the bottom as needed */
+                    left: 20px; /* Adjust the distance from the left as needed */
+                    z-index: 2; /* Ensure the button is behind the mobile menu */
+                }
+            }
+            
+                
+              
+        </style>
         <!--=====================================
                     CSS LINK PART START
         =======================================-->
@@ -72,6 +142,12 @@
         =======================================-->
     </head>
     <body>
+        <button  id="whatsappButton">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+
+        
+
         <div class="backdrop"></div>
         <a class="backtop fas fa-arrow-up" href="#"></a>
         
@@ -126,7 +202,9 @@
                     HEADER TOP PART END 
         =======================================-->
 
+      
 
+        
 
         <!--=====================================
                     HEADER PART START
@@ -142,7 +220,6 @@
                         {% if user.is_authenticated %}
                             {% comment %} <img src="images/user.png" alt="user"> {% endcomment %}
                         {% else %}
-                       
                         <div class="link-container">
                             <a class="product-add" href="/accounts/login">LogIn</a>
                             <a class="product-add" href="/accounts/signup" >SignUp</a>
@@ -438,7 +515,7 @@
                     MOBILE-MENU PART START
         =======================================-->
         <div class="mobile-menu">
-            <a href="index.html" title="Home Page">
+            <a href="/" title="Home Page">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </a>
@@ -785,6 +862,27 @@
             <!--=====================================
                     JS LINK PART END
         =======================================-->
+        
+        <script>
+            document.getElementById('whatsappButton').addEventListener('click', function() {
+                const phoneNumber = '201092969975'; // Replace with the recipient's phone number without the + sign
+                const message = 'Hello, Taha'; // Replace with your message
+    
+                // Function to detect mobile devices
+                function isMobile() {
+                    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                    return /android|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|iphone|ipod|ipad|iris|kindle|lge |maemo|midp|mmp|mobile|netfront|nintendo DS|opera mobi|opera mini|palm|phone|pocket|psp|silk|symbian|up.browser|up.link|webos|wos/i.test(userAgent);
+                }
+    
+                const url = isMobile()
+                    ? `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`
+                    : `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    
+                window.open(url, '_blank');
+            });
+        </script>
+      
+        
         <script>
             
             document.addEventListener('DOMContentLoaded', function () {
