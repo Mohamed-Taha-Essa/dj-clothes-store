@@ -220,7 +220,7 @@
                             this.showForm = !this.showForm;
                         },
                         fetchBrands() {
-                            axios.get('http://127.0.0.1:8000/products/api/brands')
+                            axios.get('https://taha-essa-mineh.ondigitalocean.app/products/api/brands')
                                 .then(response => {
                                     console.log('Brands fetched:', response.data);
                                     this.brands = response.data;
@@ -237,7 +237,7 @@
                             };
                             console.log('Fetching products with filterParams:', filterParams);  // Debugging line
 
-                            axios.get('http://127.0.0.1:8000/products/api/products', { params: filterParams })
+                            axios.get('https://taha-essa-mineh.ondigitalocean.app/products/api/products', { params: filterParams })
                                 .then(response => {
                                     this.products = response.data.results;
                                     console.log('products fetched:', this.products);
