@@ -117,14 +117,13 @@
                                         </a>
                                        
                                     </div>
-                                    <div class="product-content">
+                                 
                                         <div class="product-rating">
-                                            <i class="icofont-star" v-if="product.avg_rate > 0" class="active"></i>
-                                                <i class="icofont-star" v-if="product.avg_rate > 1" class="active"></i>
-                                                <i class="icofont-star" v-if="product.avg_rate > 2" class="active"></i>
-                                                <i class="icofont-star" v-if="product.avg_rate > 3" class="active"></i>
-                                                <i class="icofont-star" v-if="product.avg_rate > 4" class="active"></i>
-                                                <a href="product-video.html">([[ product.review_count ]])</a>    
+                                            <i class="icofont-star" v-bind:class="{ 'active': product.avg_rate > 1 }"></i>
+                                            <i class="icofont-star" v-bind:class="{ 'active': product.avg_rate > 2 }"></i>
+                                            <i class="icofont-star" v-bind:class="{ 'active': product.avg_rate > 3 }"></i>
+                                            <i class="icofont-star" v-bind:class="{ 'active': product.avg_rate > 4 }"></i>
+                                            <a href="product-video.html">([[ product.review_count ]])</a>    
                                          </div>
                                     <h6 class="product-name">
                                         <a :href="'/products/' + product.slug">[[ product.name.split(' ').slice(0,2).join(' ') ]]</a>
